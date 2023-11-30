@@ -1,0 +1,16 @@
+- repo: https://github.com/ISPritchin/ClearAML
+  rev: v0.1.6
+  hooks:
+    # Run the linter.
+    - id: ruff
+
+    # Run the black.
+    - id: black
+      name: black
+      description: "Black: The uncompromising Python code formatter"
+      entry: black
+      stages: [pre-commit, pre-merge-commit, pre-push, manual]
+      language: python
+      minimum_pre_commit_version: 2.9.2
+      require_serial: true
+      types_or: [python, pyi]
