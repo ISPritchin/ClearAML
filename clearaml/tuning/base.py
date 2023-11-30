@@ -18,13 +18,11 @@ class DistributionBase(ABC):
 
 
 class Choice(DistributionBase):
-
     def __init__(self, options) -> None:
         self.options = options
 
 
 class Uniform(DistributionBase):
-
     def __init__(self, low, high, q=None, log=False) -> None:
         self.low = low
         self.high = high
@@ -33,7 +31,6 @@ class Uniform(DistributionBase):
 
 
 class Normal(DistributionBase):
-
     def __init__(self, low, high, q=None, log=False) -> None:
         self.low = low
         self.high = high
@@ -55,8 +52,12 @@ class ParamsTuner(ABC):
         Returns:
             Dict with best fitted params.
 
+        Raises:
+            AttributeError: If the ParamsTuner has not been fitted yet.
+
         """
-        assert hasattr(self, "_best_params"), "ParamsTuner should be fitted first"
+        if not hasattr(self, "_best_params"):
+            raise AttributeError("ParamsTuner should be fitted first")
         return self._best_params
 
     @overload
@@ -105,7 +106,5 @@ class DefaultTuner(ParamsTuner):
         Returns:
             Tuple (None, None).
         """
-        self._best_params = ml_algo.init_params_on_input(
-            train_valid_iterator=train_valid_iterator
-        )
+        self._best_params = ml_algo.init_params_on_input(train_valid_iterator=train_valid_iterator)
         return None, None
